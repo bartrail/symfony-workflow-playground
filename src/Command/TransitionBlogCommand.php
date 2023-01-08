@@ -58,6 +58,11 @@ final class TransitionBlogCommand extends Command
         $blog->setCurrentPlace($marking);
 
         if ($this->blogPublishingStateMachine->can($blog, $transition) === false) {
+            $table->addRow([
+                $before->name,
+                $transition->name,
+                '',
+            ]);
             return;
         }
 

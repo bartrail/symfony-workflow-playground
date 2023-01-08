@@ -35,7 +35,6 @@ class BlogPost
 
     public function setCurrentPlace(string|Marking $marking): void
     {
-
         $this->currentPlace = is_string($marking) ? Marking::from($marking) : $marking;
     }
 }
