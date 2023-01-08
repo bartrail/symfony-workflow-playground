@@ -1,0 +1,28 @@
+framework:
+    workflows:
+        blog_publishing:
+#            type: 'workflow' # or 'state_machine'
+            type: 'state_machine' # or 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'currentPlace'
+            supports:
+                - App\Entity\BlogPost
+            initial_marking: !php/enum App\Marking::DRAFT
+            places:
+                - !php/enum App\Marking::DRAFT
+                - !php/enum App\Marking::REVIEWED
+                - !php/enum App\Marking::REJECTED
+                - !php/enum App\Marking::PUBLISHED
+            transitions:
+                !php/enum App\Transition::TO_REVIEW:
+                    from: !php/enum App\Marking::DRAFT
+                    to:   !php/enum App\Marking::REVIEWED
+                !php/enum App\Transition::PUBLISH:
+                    from: !php/enum App\Marking::REVIEWED
+                    to:   !php/enum App\Marking::PUBLISHED
+                !php/enum App\Transition::REJECT:
+                    from: !php/enum App\Marking::REVIEWED
+                    to:   !php/enum App\Marking::REJECTED
